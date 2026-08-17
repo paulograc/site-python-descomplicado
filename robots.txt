@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://paulograc.github.io/site-python-descomplicado/sitemap.xml
