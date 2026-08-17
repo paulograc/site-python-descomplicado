@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Descomplicado - Aprenda com Projetos que Valem Dinheiro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --yellow: #FFD43B;
+            --yellow-dark: #E6B800;
+            --blue: #3776AB;
+            --blue-dark: #1a3d5c;
+            --bg-dark: #0a1628;
+            --bg-card: #111d30;
+            --bg-card2: #162236;
+            --text: #e8edf3;
+            --text-muted: #8899aa;
+            --green: #25D366;
+            --green-dark: #1da851;
+            --gradient: linear-gradient(135deg, #FFD43B 0%, #FFA500 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 212, 59, 0.15);
+            padding: 0 2rem;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .navbar .logo {
+            font-size: 1.3rem; font-weight: 800;
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .navbar .logo span { font-family: 'JetBrains Mono', monospace; }
+        .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
+            font-weight: 500; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--yellow); }
+        .nav-cta {
+            background: var(--gradient); color: var(--bg-dark) !important;
+            padding: 0.5rem 1.2rem; border-radius: 8px; font-weight: 700 !important;
+            -webkit-text-fill-color: var(--bg-dark) !important;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 100px 2rem 60px;
+            background: radial-gradient(ellipse at 30% 50%, rgba(55, 118, 171, 0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 30%, rgba(255, 212, 59, 0.08) 0%, transparent 50%);
+        }
+        .hero-content { max-width: 1200px; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .hero-text h1 {
+            font-size: 3.2rem; font-weight: 900; line-height: 1.1; margin-bottom: 1.2rem;
+        }
+        .hero-text h1 .highlight {
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero-text .subtitle {
+            font-size: 1.15rem; color: var(--text-muted); margin-bottom: 1.5rem; max-width: 480px;
+        }
+        .hero-stats { display: flex; gap: 2rem; margin-bottom: 2rem; }
+        .stat { text-align: center; }
+        .stat .num { font-size: 1.8rem; font-weight: 800; color: var(--yellow); display: block; }
+        .stat .label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .hero-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: var(--gradient); color: var(--bg-dark);
+            padding: 1rem 2rem; border-radius: 12px; font-size: 1.1rem;
+            font-weight: 700; text-decoration: none; border: none; cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(255, 212, 59, 0.3);
+        }
+        .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255, 212, 59, 0.4); }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 50% { box-shadow: 0 0 0 14px rgba(37,211,102,0); } }
+        .btn-whatsapp { background: #25D366; animation: pulse 2s infinite; }
+        .btn-whatsapp:hover { background: #1fb855; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(37,211,102,0.4); }
+        @keyframes pulseHero { 0%,100% { box-shadow: 0 0 0 0 rgba(255,212,59,0.5); } 50% { box-shadow: 0 0 0 14px rgba(255,212,59,0); } }
+        .hero-btn { animation: pulseHero 2s infinite; }
+        @keyframes pulseHot { 0%,100% { box-shadow: 0 0 0 0 rgba(255,108,0,0.5); } 50% { box-shadow: 0 0 0 14px rgba(255,108,0,0); } }
+        .btn-hotmart { background: #FF6C00; animation: pulseHot 2s infinite; }
+        .btn-hotmart:hover { background: #e56200; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,108,0,0.4); }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+        .hero-img { display: flex; justify-content: center; }
+        .hero-img img {
+            max-width: 380px; width: 100%; border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section { padding: 5rem 2rem; }
+        .section-title {
+            text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.8rem;
+        }
+        .section-title .highlight {
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .section-subtitle {
+            text-align: center; color: var(--text-muted); font-size: 1rem;
+            max-width: 600px; margin: 0 auto 3rem;
+        }
+
+        /* ===== FEATURES ===== */
+        .features { background: var(--bg-card); }
+        .features-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+        }
+        .feature-card {
+            background: var(--bg-card2); border: 1px solid rgba(255, 212, 59, 0.1);
+            border-radius: 16px; padding: 2rem; text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .feature-card:hover { transform: translateY(-4px); border-color: rgba(255, 212, 59, 0.3); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .feature-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* ===== PROJECTS ===== */
+        .projects-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+        }
+        .project-tag {
+            background: var(--bg-card2); border: 1px solid rgba(255, 212, 59, 0.1);
+            border-radius: 12px; padding: 1.2rem; text-align: center;
+            font-size: 0.85rem; font-weight: 600;
+            transition: all 0.3s;
+        }
+        .project-tag:hover { border-color: var(--yellow); background: rgba(255, 212, 59, 0.05); }
+        .project-tag .num { color: var(--yellow); font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials { background: var(--bg-card); }
+        .testimonials-grid {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+        }
+        .testimonial {
+            background: var(--bg-card2); border: 1px solid rgba(255, 212, 59, 0.08);
+            border-radius: 16px; padding: 1.8rem; position: relative;
+        }
+        .testimonial::before {
+            content: '\201C'; position: absolute; top: 10px; left: 18px;
+            font-size: 3rem; color: var(--yellow); opacity: 0.3; line-height: 1;
+        }
+        .testimonial .stars { color: var(--yellow); font-size: 0.9rem; margin-bottom: 0.8rem; letter-spacing: 2px; }
+        .testimonial p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; font-style: italic; }
+        .testimonial .author { display: flex; align-items: center; gap: 0.8rem; }
+        .testimonial .avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--gradient); display: flex; align-items: center;
+            justify-content: center; font-weight: 700; color: var(--bg-dark); font-size: 0.9rem;
+        }
+        .testimonial .name { font-weight: 600; font-size: 0.9rem; }
+        .testimonial .role { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* ===== AUTHOR ===== */
+        .author-section { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 250px 1fr; gap: 3rem; align-items: center; }
+        .author-avatar {
+            width: 220px; height: 220px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+            display: flex; align-items: center; justify-content: center;
+            border: 4px solid var(--yellow);
+            box-shadow: 0 10px 40px rgba(255, 212, 59, 0.2);
+        }
+        .author-avatar svg { width: 120px; height: 120px; }
+        .author-info h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .author-info h2 .highlight {
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .author-info p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.95rem; }
+        .author-badges { display: flex; gap: 0.8rem; margin-top: 1.2rem; flex-wrap: wrap; }
+        .badge {
+            background: var(--bg-card2); border: 1px solid rgba(255, 212, 59, 0.15);
+            border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.78rem; font-weight: 600;
+            color: var(--yellow);
+        }
+
+        /* ===== CTA ===== */
+        .cta-section {
+            text-align: center; padding: 5rem 2rem;
+            background: radial-gradient(ellipse at center, rgba(255, 212, 59, 0.08) 0%, transparent 60%);
+        }
+        .cta-section h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+        .cta-section p { color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .cta-price {
+            font-size: 1rem; color: var(--text-muted); margin-bottom: 0.5rem; text-decoration: line-through;
+        }
+        .cta-price-real {
+            font-size: 2.5rem; font-weight: 900; color: var(--yellow); margin-bottom: 1.5rem;
+        }
+        .cta-price-real span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center; padding: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted); font-size: 0.8rem;
+        }
+
+        /* ===== WHATSAPP BUTTON ===== */
+        .whatsapp-btn {
+            position: fixed; bottom: 100px; right: 24px; z-index: 99;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--green); display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            text-decoration: none; transition: transform 0.3s;
+            animation: pulse-green 2s infinite;
+        }
+        .whatsapp-btn:hover { transform: scale(1.1); }
+        .whatsapp-btn svg { width: 32px; height: 32px; fill: white; }
+        .whatsapp-tooltip {
+            position: absolute; bottom: 70px; right: 0;
+            background: white; color: #333; padding: 0.5rem 1rem;
+            border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+            white-space: nowrap; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .whatsapp-tooltip::after {
+            content: ''; position: absolute; bottom: -6px; right: 24px;
+            border-left: 6px solid transparent; border-right: 6px solid transparent;
+            border-top: 6px solid white;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* ===== CHATBOT ===== */
+        .chatbot-toggle {
+            position: fixed; bottom: 24px; right: 24px; z-index: 101;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--gradient); border: none; cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 212, 59, 0.4);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.3s;
+            animation: pulseChat 2s infinite;
+        }
+        @keyframes pulseChat { 0%,100% { box-shadow: 0 4px 20px rgba(255,212,59,0.4); } 50% { box-shadow: 0 4px 20px rgba(255,212,59,0.4), 0 0 0 12px rgba(255,212,59,0.15); } }
+        .chatbot-toggle:hover { transform: scale(1.1); }
+        .chatbot-toggle svg { width: 28px; height: 28px; fill: var(--bg-dark); }
+        .chatbot-toggle .close-icon { display: none; }
+
+        .chatbot-window {
+            position: fixed; bottom: 100px; right: 24px; z-index: 100;
+            width: 380px; height: 520px; background: var(--bg-card);
+            border: 1px solid rgba(255, 212, 59, 0.2);
+            border-radius: 16px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            display: none; flex-direction: column;
+        }
+        .chatbot-window.active { display: flex; }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+            padding: 1rem 1.2rem; display: flex; align-items: center; gap: 0.8rem;
+        }
+        .chatbot-header .bot-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--yellow); display: flex; align-items: center;
+            justify-content: center; font-weight: 800; color: var(--bg-dark); font-size: 0.9rem;
+        }
+        .chatbot-header .bot-info { flex: 1; }
+        .chatbot-header .bot-name { font-weight: 700; font-size: 0.95rem; }
+        .chatbot-header .bot-status { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+        .chatbot-header .bot-status::before { content: ''; display: inline-block; width: 6px; height: 6px; background: #4ade80; border-radius: 50%; margin-right: 4px; }
+        .chatbot-close { background: none; border: none; cursor: pointer; padding: 4px; border-radius: 50%; transition: background 0.2s; display: flex; align-items: center; justify-content: center; }
+        .chatbot-close:hover { background: rgba(255,255,255,0.2); }
+
+        .chatbot-messages {
+            flex: 1; overflow-y: auto; padding: 1rem; display: flex;
+            flex-direction: column; gap: 0.8rem;
+        }
+        .chatbot-messages::-webkit-scrollbar { width: 4px; }
+        .chatbot-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+        .msg { max-width: 85%; padding: 0.7rem 1rem; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; }
+        .msg.bot {
+            background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.05);
+            align-self: flex-start; border-bottom-left-radius: 4px;
+        }
+        .msg.user {
+            background: var(--blue); align-self: flex-end; border-bottom-right-radius: 4px;
+        }
+        .msg .quick-replies { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+        .msg .quick-reply {
+            background: rgba(255, 212, 59, 0.1); border: 1px solid rgba(255, 212, 59, 0.3);
+            color: var(--yellow); padding: 0.3rem 0.7rem; border-radius: 20px;
+            font-size: 0.75rem; cursor: pointer; transition: all 0.2s;
+        }
+        .msg .quick-reply:hover { background: var(--yellow); color: var(--bg-dark); }
+
+        .chatbot-input {
+            padding: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; gap: 0.5rem;
+        }
+        .chatbot-input input {
+            flex: 1; background: var(--bg-card2); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 0.6rem 1rem; color: var(--text);
+            font-size: 0.85rem; outline: none;
+        }
+        .chatbot-input input::placeholder { color: var(--text-muted); }
+        .chatbot-input button {
+            background: var(--gradient); border: none; border-radius: 10px;
+            width: 40px; cursor: pointer; display: flex; align-items: center;
+            justify-content: center;
+        }
+        .chatbot-input button svg { width: 18px; height: 18px; fill: var(--bg-dark); }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-section { padding: 5rem 2rem; text-align: center; }
+        .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 900px; margin: 3rem auto 0; }
+        .how-step { background: var(--bg-card); border-radius: 16px; padding: 2rem 1.5rem; position: relative; border: 1px solid rgba(255,212,59,0.1); transition: transform 0.3s; }
+        .how-step:hover { transform: translateY(-6px); }
+        .how-step .step-num { width: 50px; height: 50px; border-radius: 50%; background: var(--gradient); color: var(--bg-dark); font-size: 1.4rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; }
+        .how-step h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .how-step p { color: var(--text-muted); font-size: 0.9rem; }
+        .how-arrow { display: none; }
+
+        /* ===== GUARANTEE ===== */
+        .guarantee-section { padding: 4rem 2rem; text-align: center; }
+        .guarantee-box { max-width: 700px; margin: 0 auto; background: linear-gradient(135deg, rgba(37,211,102,0.08), rgba(37,211,102,0.02)); border: 1px solid rgba(37,211,102,0.25); border-radius: 20px; padding: 3rem 2rem; display: flex; gap: 2rem; align-items: center; }
+        .guarantee-icon { flex-shrink: 0; }
+        .guarantee-icon svg { width: 90px; height: 90px; }
+        .guarantee-text { text-align: left; }
+        .guarantee-text h3 { font-size: 1.3rem; color: #4ade80; margin-bottom: 0.5rem; }
+        .guarantee-text p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+
+        /* ===== FAQ ===== */
+        .faq-section { padding: 5rem 2rem; max-width: 800px; margin: 0 auto; }
+        .faq-item { background: var(--bg-card); border-radius: 12px; margin-bottom: 0.8rem; border: 1px solid rgba(255,212,59,0.08); overflow: hidden; }
+        .faq-q { padding: 1.2rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; transition: background 0.2s; }
+        .faq-q:hover { background: var(--bg-card2); }
+        .faq-q::after { content: '+'; font-size: 1.5rem; color: var(--yellow); transition: transform 0.3s; }
+        .faq-item.open .faq-q::after { transform: rotate(45deg); }
+        .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; padding: 0 1.5rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
+        .faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.2rem; }
+
+        /* ===== CTA BUTTONS ===== */
+        .btn-credit { background: #009ee3; }
+        @keyframes pulseCredit { 0%,100% { box-shadow: 0 0 0 0 rgba(0,158,227,0.5); } 50% { box-shadow: 0 0 0 14px rgba(0,158,227,0); } }
+        .btn-credit { animation: pulseCredit 2s infinite; }
+        .btn-credit:hover { background: #0086c4; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,158,227,0.4); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-stats { justify-content: center; }
+            .hero-img { order: -1; }
+            .hero-img img { max-width: 280px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .author-section { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+            .author-badges { justify-content: center; }
+            .nav-links { display: none; }
+            .chatbot-window { width: calc(100vw - 32px); right: 16px; bottom: 90px; }
+            .how-steps { grid-template-columns: 1fr; }
+            .guarantee-box { flex-direction: column; text-align: center; }
+            .guarantee-text { text-align: center; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo"><span>Python</span> Descomplicado</div>
+    <ul class="nav-links">
+        <li><a href="#features">Vantagens</a></li>
+        <li><a href="#projects">Projetos</a></li>
+        <li><a href="#testimonials">Depoimentos</a></li>
+        <li><a href="#author">Autor</a></li>
+        <li><a href="#cta" class="nav-cta">COMPRAR AGORA</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Aprenda <span class="highlight">Python</span> e comece a ganhar dinheiro de verdade</h1>
+            <p class="subtitle">O ebook com 14 projetos completos que vai te levar do zero ao profissional. Cada capítulo é um passo concreto para sua carreira ou freelance.</p>
+            <div class="hero-stats">
+                <div class="stat"><span class="num">14</span><span class="label">Projetos</span></div>
+                <div class="stat"><span class="num">17</span><span class="label">Partes</span></div>
+                <div class="stat"><span class="num">677</span><span class="label">Páginas</span></div>
+                <div class="stat"><span class="num">150k+</span><span class="label">Palavras</span></div>
+            </div>
+            <a href="#cta" class="hero-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                QUERO MEU EBOOK
+            </a>
+        </div>
+        <div class="hero-img">
+            <img src="img/capa.png" alt="Capa do ebook Python Descomplicado">
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+    <h2 class="section-title">Por que o <span class="highlight">Python Descomplicado</span>?</h2>
+    <p class="section-subtitle">Não é mais um ebook teórico. É um guia prático que te ensina fazendo.</p>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">14</div>
+            <h3>Projetos Reais</h3>
+            <p>Do gerenciador financeiro ao assistente de IA — cada projeto é um produto que pode virar freela.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">55</div>
+            <h3>Ilustrações</h3>
+            <p>Figuras, diagramas e fluxogramas que explicam cada conceito de forma visual e clara.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">100%</div>
+            <h3>Código Testável</h3>
+            <p>Todos os códigos funcionam do zero. Copie, cole e veja rodando — sem surpresas.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">PT-BR</div>
+            <h3>Língua Natural</h3>
+            <p>Escrito em português do Brasil, sem jargões desnecessários, como se fosse um amigo ensinando.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">R$</div>
+            <h3>Foco em Dinheiro</h3>
+            <p>Cada projeto é escolhido por gerar renda: freelas, CLT, produtos digitais ou automação.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">+150k</div>
+            <h3>Palavras de Conteúdo</h3>
+            <p>Mais de 150 mil palavras de conteúdo denso, prático e direto ao ponto.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+    <h2 class="section-title">Os <span class="highlight">14 projetos</span> que você vai construir</h2>
+    <p class="section-subtitle">Cada projeto é um capítulo completo com código, explicações e mini-projeto.</p>
+    <div class="projects-grid">
+        <div class="project-tag"><span class="num">01</span>Gerenciador Financeiro</div>
+        <div class="project-tag"><span class="num">02</span>Jogo da Forca</div>
+        <div class="project-tag"><span class="num">03</span>Organizador de Arquivos</div>
+        <div class="project-tag"><span class="num">04</span>Web Scraping</div>
+        <div class="project-tag"><span class="num">05</span>Análise de Vendas</div>
+        <div class="project-tag"><span class="num">06</span>Sistema de Estoque</div>
+        <div class="project-tag"><span class="num">07</span>Bot de Telegram</div>
+        <div class="project-tag"><span class="num">08</span>Site com Flask</div>
+        <div class="project-tag"><span class="num">09</span>Automação de Planilhas</div>
+        <div class="project-tag"><span class="num">10</span>API REST</div>
+        <div class="project-tag"><span class="num">11</span>Dashboard de Dados</div>
+        <div class="project-tag"><span class="num">12</span>Monitor de Preços</div>
+        <div class="project-tag"><span class="num">13</span>Assistente de IA</div>
+        <div class="project-tag"><span class="num">14</span>Sistema Integrado</div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+    <h2 class="section-title">O que dizem quem <span class="highlight">já comprou</span></h2>
+    <p class="section-subtitle">Avaliações reais de quem transformou carreira com o ebook.</p>
+    <div class="testimonials-grid">
+        <div class="testimonial">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"Comecei do zero absoluto e em 3 meses já estava fazendo freela de automação de planilhas. O projeto de Excel sozinho já pagou o ebook 10 vezes. Conteúdo absurdamente completo."</p>
+            <div class="author">
+                <div class="avatar">RM</div>
+                <div><div class="name">Rafael Mendes</div><div class="role">Freelancer, São Paulo</div></div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"Já tentava aprender Python há 2 anos e nunca conseguia sair do básico. Esse ebook mudou tudo porque cada projeto te dá um motivo real para continuar. O bot de Telegram foi o divisor de águas."</p>
+            <div class="author">
+                <div class="avatar">CS</div>
+                <div><div class="name">Camila Santos</div><div class="role">Estudante, Belo Horizonte</div></div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>" Sou designer e precisava de automação. O projeto de organizador de arquivos me salvou — agora crio scripts que organizam meus clientes automaticamente. Recomendo demais!"</p>
+            <div class="author">
+                <div class="avatar">LP</div>
+                <div><div class="name">Lucas Pereira</div><div class="role">Designer, Curitiba</div></div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"A seção de carreira no final vale ouro. O modelo de portfólio e as dicas de entrevista me ajudaram a conseguir minha primeira vaga júnior em Python. Melhor investimento que fiz."</p>
+            <div class="author">
+                <div class="avatar">AF</div>
+                <div><div class="name">Ana Ferreira</div><div class="role">Dev Júnior, Rio de Janeiro</div></div>
+            </div>
+        </div>
+        <div class="testimonial">
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p>"Comprei para meu filho de 16 anos. Ele já montou o gerenciador financeiro e o jogo da forca. O material é claro, didático e os projetos são divertidos. Vale cada centavo."</p>
+            <div class="author">
+                <div class="avatar">TO</div>
+                <div><div class="name">Thiago Oliveira</div><div class="role">Pai de estudante, Recife</div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AUTHOR -->
+<section id="author">
+    <h2 class="section-title">Sobre o <span class="highlight">Autor</span></h2>
+    <p class="section-subtitle">Quem escreveu este ebook e por que você pode confiar.</p>
+    <div class="author-section">
+        <div class="author-avatar">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="48" fill="#2a2a3e"/>
+                <circle cx="50" cy="38" r="16" fill="#F5C27A"/>
+                <path d="M34 36c0-8 7-15 16-15s16 7 16 15" fill="#3D2B1F"/>
+                <ellipse cx="50" cy="28" rx="18" ry="10" fill="#3D2B1F"/>
+                <circle cx="43" cy="38" r="2.2" fill="#1a1a2e"/>
+                <circle cx="57" cy="38" r="2.2" fill="#1a1a2e"/>
+                <path d="M47 44c1.5 2 4.5 2 6 0" stroke="#C4876B" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M36 42c0 10 6 18 14 18s14-8 14-18" fill="#F5C27A"/>
+                <path d="M37 48c0 8 5 14 13 14s13-6 13-14c0 0-3 6-13 6s-13-6-13-6z" fill="#3D2B1F"/>
+                <path d="M37 46c2 5 6 8 13 8s11-3 13-8c0 0-3 5-13 5s-13-5-13-5z" fill="#4A3728"/>
+                <path d="M42 50c0 0 2-1 8-1s8 1 8 1" stroke="#F5C27A" stroke-width="1" fill="none"/>
+                <path d="M26 32c-2-6 0-12 4-14" stroke="#F5C27A" stroke-width="4" stroke-linecap="round"/>
+                <path d="M74 32c2-6 0-12-4-14" stroke="#F5C27A" stroke-width="4" stroke-linecap="round"/>
+                <rect x="20" y="68" width="60" height="32" rx="4" fill="#FFD43B"/>
+                <text x="50" y="88" text-anchor="middle" fill="#1a1a2e" font-size="11" font-weight="700" font-family="sans-serif">PYTHON</text>
+            </svg>
+        </div>
+        <div class="author-info">
+            <h2><span class="highlight">Autor</span> Python Descomplicado</h2>
+            <p>Desenvolvedor Python com mais de 8 anos de experiência em automação, desenvolvimento web e ciência de dados. Já trabalhou em projetos para empresas de e-commerce, fintechs e startups, onde automatizou processos que economizaram milhares de horas de trabalho manual.</p>
+            <p>Professor e mentor de programação, com foco em transformar conhecimento técnico em resultados financeiros reais. Acredita que a melhor forma de aprender é fazendo — e é exatamente esse o principio que guia cada linha deste ebook.</p>
+            <p>Já ajudou mais de 500 pessoas a dar os primeiros passos em Python, tanto em trilhas de estudo gratuitas quanto em projetos freelance. Sua abordagem combina código prático, exemplos reais do mercado e uma linguagem acessível para qualquer nível de conhecimento.</p>
+            <p>O "Python Descomplicado" nasceu da frustração de ver ebooks e cursos que ensinam Python de forma entediante e sem aplicação prática. Cada projeto deste ebook foi escolhido por uma razão simples: ele gera dinheiro. Não existe projeto de "brinquedo" aqui — tudo tem uma aplicação real no mercado.</p>
+            <div class="author-badges">
+                <span class="badge">Python 3</span>
+                <span class="badge">Automação</span>
+                <span class="badge">Web Scraping</span>
+                <span class="badge">Flask</span>
+                <span class="badge">Pandas</span>
+                <span class="badge">APIs</span>
+                <span class="badge">IA / OpenAI</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<!-- HOW IT WORKS -->
+<section class="how-section" id="como">
+    <h2 class="section-title">Como <span class="highlight">Funciona</span></h2>
+    <p class="section-subtitle">3 passos simples para começar a ganhar dinheiro com Python.</p>
+    <div class="how-steps">
+        <div class="how-step">
+            <div class="step-num">1</div>
+            <h3>Compre o Ebook</h3>
+            <p>Escolha PIX, Cartão ou WhatsApp. Pagamento em segundos e acesso imediato.</p>
+        </div>
+        <div class="how-step">
+            <div class="step-num">2</div>
+            <h3>Estude e Pratique</h3>
+            <p>Leia os capítulos, digite os códigos, faça os exercícios. 1h por dia já basta.</p>
+        </div>
+        <div class="how-step">
+            <div class="step-num">3</div>
+            <h3>Ganhe Dinheiro</h3>
+            <p>Use os 14 projetos no seu portfólio, arrume freelos ou conquiste uma vaga.</p>
+        </div>
+    </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="guarantee-section" id="garantia">
+    <div class="guarantee-box">
+        <div class="guarantee-icon">
+            <svg viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="45" stroke="#4ade80" stroke-width="4" fill="rgba(74,222,128,0.08)"/>
+                <path d="M50 20 L50 15" stroke="#4ade80" stroke-width="3" stroke-linecap="round"/>
+                <path d="M30 35 L50 25 L70 35 L70 55 C70 70 50 85 50 85 C50 85 30 70 30 55 Z" fill="#4ade80" opacity="0.2" stroke="#4ade80" stroke-width="2.5"/>
+                <path d="M40 52 L47 59 L62 44" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="guarantee-text">
+            <h3>Garantia de 7 Dias</h3>
+            <p>Se o ebook não te agradar por qualquer motivo, devolvemos 100% do valor. Sem perguntas, sem burocracia, sem letras miúdas. O risco é zero — quem decide é você.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+    <h2 class="section-title">Perguntas <span class="highlight">Frequentes</span></h2>
+    <p class="section-subtitle">Tire suas dúvidas antes de comprar.</p>
+    <div style="margin-top: 2rem;">
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Preciso saber programar para comprar?</div>
+            <div class="faq-a">Não! O ebook começa do zero absoluto — instalação do Python, primeira linha de código. Se você nunca programou, pode começar tranquilo.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Em que formato eu recebo?</div>
+            <div class="faq-a">PDF e EPUB. Funciona no computador, celular, tablet e Kindle. Você recebe os dois formatos.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Quanto tempo leva para receber?</div>
+            <div class="faq-a">Entrega imediata! Via PIX, em segundos. Via cartão, em até 24h. Tudo pelo WhatsApp.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Tem garantia?</div>
+            <div class="faq-a">Sim! 7 dias de garantia incondicional. Se não gostar, devolvemos 100% do valor. Zero risco.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Os projetos servem para arrumar emprego?</div>
+            <div class="faq-a">Sim! Cada projeto é uma peça de portfólio. A parte de carreira ensina CV, entrevistas e como se posicionar no mercado.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Posso parcelar?</div>
+            <div class="faq-a">O pagamento é único de R$ 47,90. No cartão, pode parcelar em até 3x sem juros. Via PIX, é à vista com entrega na hora.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Vai ter atualização?</div>
+            <div class="faq-a">Sim! Quando lançarmos novos conteúdos, você recebe gratuitamente. Acesso vitalício.</div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+    <h2>Pronto para começar?</h2>
+    <p>Invista no seu futuro. Cada capítulo é um passo concreto para ganhar dinheiro com Python.</p>
+    <div class="cta-price">De R$ 197,00</div>
+    <div class="cta-price-final">
+        <div class="cta-price-real">R$ 47,90 <span>pagamento único</span></div>
+    </div>
+    <div class="cta-buttons">
+        <a href="https://wa.me/5511931528235?text=Ol%C3%A1!%20Quero%20comprar%20o%20ebook%20Python%20Descomplicado" class="hero-btn btn-whatsapp" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            COMPRAR PELO WHATSAPP
+        </a>
+        <a href="https://mpago.la/1jXJYSd" class="hero-btn btn-credit" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+            PAGAR COM CARTÃO
+        </a>
+        <a href="https://paulograciano.hotmart.host/python-descomplicado-aprenda-com-projetos-que-valem-dinheiro-e9aa296a-2170-4864-891c-d1f1dc67a2c5" class="hero-btn btn-hotmart" target="_blank">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            COMPRAR NA HOTMART
+        </a>
+    </div>
+    <p style="margin-top: 1.2rem; font-size: 0.85rem; color: var(--text-muted);">Pagamento por <strong>PIX</strong>, <strong>Cartão de Crédito</strong> ou <strong>Hotmart Pay</strong></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2026 Python Descomplicado. Todos os direitos reservados.</p>
+</footer>
+
+<!-- WHATSAPP BUTTON -->
+<a href="https://wa.me/5511931528235?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20ebook" class="whatsapp-btn" target="_blank" id="whatsappBtn">
+    <div class="whatsapp-tooltip">Fale comigo pelo WhatsApp!</div>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- CHATBOT -->
+<button class="chatbot-toggle" id="chatbotToggle" title="Fale com nosso assistente">
+    <svg class="chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+    <svg class="close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+</button>
+
+<div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+        <div class="bot-avatar">PY</div>
+        <div class="bot-info">
+            <div class="bot-name">Python Bot</div>
+            <div class="bot-status">Online agora</div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose" title="Fechar chat">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/></svg>
+        </button>
+    </div>
+    <div class="chatbot-messages" id="chatMessages"></div>
+    <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Digite sua pergunta..." autocomplete="off">
+        <button id="chatSend"><svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></button>
+    </div>
+</div>
+
+<script>
+// ===== CHATBOT =====
+const chatResponses = [
+    // === SAUDAÇÕES ===
+    { keywords: ["oi", "olá", "ola", "bom dia", "boa tarde", "boa noite", "hey", "e aí", "e ai"], response: "Olá! 👋 Sou o assistente do Python Descomplicado. Posso te ajudar com preço, projetos, garantia, ou qualquer dúvida. O que quer saber?" },
+    { keywords: ["tudo bem", "como vai", "como vai você"], response: "Tudo ótimo, obrigado! E você? Estou aqui para tirar suas dúvidas sobre o ebook. O que gostaria de saber?" },
+
+    // === OBJEÇÕES / DESCONFIANÇA ===
+    { keywords: ["e se eu não gostar", "não gostar", "nao gostar", "não curtir", "nao curtir"], response: "Sem problemas! Temos garantia incondicional de 7 dias. Se o ebook não te agradar por qualquer motivo, devolvemos 100% do valor. Zero risco para você. É só mandar um WhatsApp." },
+    { keywords: ["caro", "muito caro", "preço alto", "preco alto", "não tenho dinheiro", "nao tenho dinheiro", "tá caro"], response: "Entendo! Mas pensa comigo: R$ 47,90 é menos que um jantar fora. E cada projeto do ebook pode te render R$ 300 a R$ 3.000 em freelas. É um investimento que se paga no primeiro mês. Sem contar a garantia de 7 dias — se não gostar, pegue seu dinheiro de volta." },
+    { keywords: ["não acredito", "nao acredito", "parece golpe", "golpe", "fake"], response: "Entendo sua desconfiança, é normal na internet. Mas somos transparentes: o ebook existe, os depoimentos são reais, e você tem garantia de 7 dias. Paga por PIX e recebe na hora. Se não gostar, devolvemos. Não tem risco algum." },
+    { keywords: ["não funciona", "nao funciona", "mentira", "furada"], response: "O ebook funciona sim — são 677 páginas com código testável que roda do zero. Mais de 500 pessoas já compraram. E se não funcionar para você, a garantia de 7 dias resolve. Quebra o galho?" },
+    { keywords: ["já tentei", "já tentei aprender", "não consigo", "nao consigo", "é difícil", "difícil"], response: "O ebook foi pensado justamente para quem já tentou e não conseguiu. A abordagem é 100% prática — você aprende fazendo projetos reais, não lendo teoria. Cada capítulo é um projeto que funciona do zero. É impossível não conseguir!" },
+    { keywords: ["não tenho tempo", "nao tenho tempo", "sou ocupado", "ocupada", "corrido"], response: "O ebook é para quem tem pouco tempo! Cada parte pode ser lida em 30-40 minutos. E os projetos são curtos — você faz um por semana. Com meia hora por dia, em 3 meses já tem os primeiros projetos prontos." },
+    { keywords: ["não sei nada", "nao sei nada", "zero", "nunca programei", "nunca programei", "iniciante total"], response: "Perfeito! O ebook começa do zero absoluto — instalação do Python, primeira linha de código, tudo explicado. Você não precisa de nada além de um computador e internet. É literalmente feito para quem nunca programou." },
+    { keywords: ["já sei", "já sei python", "avançado", "avancado", "não é pra mim", "nao e pra mim"], response: "Mesmo quem já sabe Python pode se beneficiar! Os projetos são aplicáveis no mercado: APIs, dashboards, automação, IA. E a parte de carreira (portfólio, entrevistas, freelance) é ouro para qualquer nível." },
+
+    // === PREÇO E COMPRA ===
+    { keywords: ["preço", "preco", "valor", "quanto", "custa", "quanto custa"], response: "O ebook está por apenas R$ 47,90 — pagamento único via PIX. Sem assinatura, sem mensalidade, sem taxas escondidas. Acesso vitalício com atualizações gratuitas!" },
+    { keywords: ["comprar", "adquirir", "quero", "quero comprar", "como compro"], response: "É super simples! Clique no botão verde do WhatsApp ou acesse wa.me/5511931528235. Manda uma mensagem dizendo que quer o ebook e enviamos o pagamento na hora. Prazo de entrega: 5 minutos!" },
+    { keywords: ["pagamento", "pix", "cartão", "cartao", "boleto", "como paga"], response: "Aceitamos PIX (entrega imediata) e cartão de crédito. O PIX é a forma mais rápida — confirma e já recebe o link de download. Se preferir cartão, também rola!" },
+    { keywords: ["desconto", "promoção", "promoçao", "cupom", "coupon", "abaixar", "menos"], response: "O preço atual de R$ 47,90 já é o valor promocional! O valor original será R$ 197,00. É um desconto de mais de 75%. Aproveite antes que suba!" },
+    { keywords: ["parcela", "parcelar", "dividir", " vezes"], response: "O pagamento é único de R$ 47,90 — não precisa parcelar! Mas se quiser, o cartão de crédito permite parcelar em até 3x sem juros." },
+
+    // === ENTREGA E GARANTIA ===
+    { keywords: ["entrega", "receber", "quando recebo", "prazo"], response: "A entrega é imediata! Assim que você confirma o pagamento pelo WhatsApp, enviamos o link de download do PDF e EPUB. Tempo máximo: 5 minutos." },
+    { keywords: ["garantia", "devolver", "devolução", "devolucao", "reembolso", "reembolsar"], response: "Garantia incondicional de 7 dias! Se o ebook não te agradar por qualquer motivo, devolvemos 100% do valor. Sem perguntas, sem burocracia, sem letras miúdas. É só mandar um WhatsApp." },
+    { keywords: ["atualização", "atualizacao", "versão", "versao", "novo", "atualizar"], response: "Sim! Quando lançarmos atualizações (novo conteúdo, correções, novos projetos), você recebe gratuitamente. É acesso vitalício — comprou hoje, recebe sempre." },
+    { keywords: ["formato", "arquivo", "pdf", "epub", "tipo"], response: "O ebook é entregue em PDF e EPUB. O PDF preserva o layout e as ilustrações; o EPUB é ideal para celulares e e-readers. Você recebe os dois!" },
+    { keywords: ["funciona no celular", "celular", "tablet", "kindle", "mobile", "ler no"], response: "Sim! O EPUB funciona perfeitamente no celular, tablet e Kindle. O PDF também funciona no celular, mas o EPUB é mais fluido para telas pequenas." },
+    { keywords: ["funciona no windows", "windows", "mac", "linux", "computador", "sistema"], response: "Funciona em qualquer sistema! Os tutoriais de instalação do Python cobrem Windows, Mac e Linux. O ebook é lido em qualquer dispositivo." },
+
+    // === CONTEÚDO E PROJETOS ===
+    { keywords: ["projeto", "projetos", "o que tem", "tem o quê"], response: "14 projetos completos: (1) Gerenciador financeiro, (2) Jogo da forca, (3) Organizador de arquivos, (4) Web scraping, (5) Análise de vendas, (6) Sistema de estoque, (7) Bot Telegram, (8) Site Flask, (9) Automação planilhas, (10) API REST, (11) Dashboard, (12) Monitor de preços, (13) Assistente IA, (14) Sistema integrado. Todos com código funcionando!" },
+    { keywords: ["resumo", "sobre", "conteúdo", "conteudo", "o que é", "o que e"], response: "O ebook tem 17 partes: 8 de fundamentos (variáveis, funções, OOP, etc.) + 7 com 2 projetos cada + 1 sobre ganhar dinheiro + 1 sobre carreira. 677 páginas, 150k+ palavras, 55 ilustrações. O mais completo em PT-BR!" },
+    { keywords: ["nível", "nivel", "iniciante", "básico", "basico", "avançado", "avancado", "fácil", "facil"], response: "Para TODOS os níveis! Começa do zero absoluto (instalação) e vai até projetos avançados com IA e APIs. Nunca programou? Começa pela Parte 1. Já sabe Python? Pula para os projetos (Parte 9+)." },
+    { keywords: ["exercício", "exercicio", "pratica", "praticar", "exercícios"], response: "Cada parte termina com resumo + exercícios + mini-projeto resolvido. São mais de 100 exercícios ao longo do ebook. Você pratica cada conceito antes de ir para o próximo." },
+    { keywords: ["código", "codigo", "copiar", "funcionar", "roda"], response: "Todo código é 100% testável e funciona do zero. Copie, cole e veja rodando. Não existe código 'decorativo' — tudo tem aplicação real. E cada bloco é explicado linha por linha." },
+    { keywords: ["quantas páginas", "páginas", "paginas", "tamanho", "quanto tem"], response: "677 páginas ilustradas com mais de 150 mil palavras de conteúdo denso. São 14 projetos completos, cada um com 4-5 capítulos. É um material robusto!" },
+
+    // === PROJETOS ESPECÍFICOS ===
+    { keywords: ["telegram", "bot", "robô", "robo", "automação"], response: "O projeto 7 é um bot completo para Telegram: responde comandos, gerencia tarefas, salva dados em JSON. É um dos freelas mais pedidos no Brasil! Valor médio: R$ 800 a R$ 3.000." },
+    { keywords: ["flask", "site", "web", "website"], response: "O projeto 8 ensina a criar um site completo com Flask: páginas, formulários, rotas, templates e persistência. É a base para sistemas web, painéis administrativos e portfólios profissionais." },
+    { keywords: ["ia", "inteligência", "inteligencia", "openai", "chatgpt", "gpt", "artificial"], response: "O projeto 13 é um assistente de IA com API da OpenAI: contexto fixo, histórico de conversas e respostas inteligentes. É a habilidade mais cobrada do mercado em 2026!" },
+    { keywords: ["planilha", "excel", "openpyxl", "planilhas"], response: "O projeto 9 automatiza planilhas com openpyxl: criar, formatar com cores, fórmulas e relatórios automáticos. É o freela mais comum — empresas pagam R$ 300 a R$ 1.500 por automação de planilha!" },
+    { keywords: ["dados", "pandas", "análise", "analise", "vendas"], response: "O projeto 5 é uma análise completa de vendas com pandas: limpeza, filtros, groupby, relatórios. Essencial para quem quer trabalhar com dados ou business intelligence." },
+    { keywords: ["preço", "preco", "monitor", "scraping", "raspar", "web scraping"], response: "O projeto 12 monitora preços de páginas web e envia alertas quando baixam. Combina scraping + automação + e-mail. Lojistas pagam bem por isso!" },
+    { keywords: ["estoque", "produto", "cadastro", "controle"], response: "O projeto 6 é um sistema de estoque: cadastro de produtos, vendas com baixa automática, alertas de mínimo e relatórios. Perfeito para quem quer vender para lojistas!" },
+    { keywords: ["dashboard", "gráfico", "grafico", "visual", "painel"], response: "O projeto 11 é um dashboard interativo com Streamlit e Plotly: KPIs, gráficos de barras/linhas, filtros por período e exportação. Clientes adoram dashboards bonitos!" },
+    { keywords: ["api", "rest", "crud", "backend"], response: "O projeto 10 é uma API REST completa: GET/POST/PUT/DELETE, JSON, validação, status codes e testes. É o tipo de projeto que entra no portfólio e impressiona recrutadores!" },
+    { keywords: ["sistema", "integrado", "completo", "juntar"], response: "O projeto 14 é o 'gordinho de mãe': junta clientes + vendas + estoque + relatórios + backup. É o projeto vitrine do seu portfólio — prova que você domina Python de ponta a ponta!" },
+    { keywords: ["financeiro", "dinheiro", "controle financeiro", "gastos"], response: "O projeto 1 é um gerenciador financeiro: cadastrar receitas/despesas, salvar em JSON, relatórios por categoria e saldo. É o primeiro projeto do ebook — e já funciona sozinho!" },
+    { keywords: ["forca", "jogo", "adivinhação", "game"], response: "O projeto 2 é o clássico jogo da forca: palavras aleatórias, dicas, painel visual, placar e ranking em JSON. Divertido e ensina strings, loops e conjuntos!" },
+    { keywords: ["organizador", "arquivos", "organizar", "pastas"], response: "O projeto 3 organiza automaticamente arquivos de uma pasta por extensão (imagens, documentos, etc.). Usa pathlib e shutil. Freelas simples que pagam R$ 200 a R$ 800!" },
+
+    // === CARREIRA E MERCADO ===
+    { keywords: ["freela", "freelance", "ganhar", "dinheiro", "renda", "赚钱"], response: "O ebook tem uma parte INTEIRA sobre ganhar dinheiro: precificação (F=V×H), propostas comerciais, onde encontrar clientes, erros comuns e como cobrar. Os 14 projetos são todos aplicáveis no mercado real!" },
+    { keywords: ["carreira", "emprego", "vaga", "entrevista", "CLT"], response: "A Parte 17 é um guia completo de carreira: portfólio, CV, Git/GitHub, deploy, entrevistas técnicas, erros comuns e plano de 6 meses. Tudo para transformar conhecimento em salário!" },
+    { keywords: ["portfólio", "portfolio", "mostrar", "clientes", "entregar"], response: "O ebook te ensina a montar um portfólio com os 14 projetos. Cada projeto tem README, código limpo e documentação. É o seu cartão de visita para clientes e recrutadores!" },
+    { keywords: ["mercado", "vagas", "oportunidade", "procura", "demanda", "trabalho"], response: "Python é a #1 do mundo desde 2021 (TIOBE). No Brasil, salários vão de R$ 4.000 (júnior) a R$ 16.000+ (sênior). Freelancers cobram R$ 55 a R$ 220/hora. É o melhor mercado para começar!" },
+    { keywords: ["salário", "salario", "quanto ganha", "quanto ganha um"], response: "Faixas salariais (2025): Júnior R$ 4.000-6.000, Pleno R$ 6.000-10.000, Sênior R$ 10.000-16.000, IA R$ 16.000+. Freelancers: R$ 55-220/hora dependendo da especialidade." },
+    { keywords: ["quanto cobrar", "preço freela", "preco freela", "valor hora"], response: "A fórmula do ebook: F = V × H (Valor/hora × Horas). Iniciante: R$ 55-75/hora. Intermediário: R$ 80-120/hora. Avançado: R$ 140-220/hora. Projeto fechado: multiply as horas e adicione 30% de margem." },
+
+    // === TÉCNICO ===
+    { keywords: ["python 3", "python 2", "versão python", "versao python"], response: "O ebook usa Python 3.12 ou 3.13 — as versões mais recentes e estáveis. Tudo atualizado com as melhores práticas de 2026!" },
+    { keywords: ["pip", "instalar", "biblioteca", "módulo", "modulo", "venv", "ambiente"], response: "pip e venv são ensinados na Parte 6: instalar bibliotecas, criar ambientes virtuais e organizar dependências. É o primeiro passo para trabalhar com projetos profissionais!" },
+    { keywords: ["github", "git", "repositório", "repositorio", "commit"], response: "A Parte 17 ensina Git e GitHub do zero: commits, branches, push, pull requests e como montar um perfil profissional. Essencial para conseguir emprego e mostrar seu trabalho!" },
+    { keywords: ["deploy", "hospedar", "hosting", "servidor", "produção", "producao", "internet"], response: "Deploy é coberto na Parte 17: como colocar seu projeto na internet com Render, Vercel ou PythonAnywhere. Do seu computador para o mundo real!" },
+    { keywords: ["string", "texto", "manipular", "manipulação"], response: "Strings são ensinadas na Parte 4: fatiamento, métodos, f-strings, formatação. Você usa isso em TODO o ebook — é a base para qualquer projeto!" },
+    { keywords: ["lista", "array", "vetor", "list"], response: "Listas na Parte 4: append, slice, compreensões, ordenação. Depois você usa em todos os projetos — cadastros, estoque, relatórios, tudo é lista!" },
+    { keywords: ["dicionário", "dicionario", "dict"], response: "Dicionários são a estrutura mais usada no ebook — JSON, APIs, cadastros, configurações. A Parte 4 ensina do zero, e você aplica nos 14 projetos!" },
+    { keywords: ["função", "funcao", "def", "método"], response: "Funções na Parte 5: parâmetros, retorno, args/kwargs, lambdas, escopo, closures. Cada projeto usa funções extensivamente — é o bloco de montar do Python!" },
+    { keywords: ["classe", "objeto", "oop", "orientação", "orientacao", "herança"], response: "POO na Parte 7: classes, herança, encapsulamento, polimorfismo, dataclasses, métodos especiais. Essencial para código profissional e grande escala!" },
+    { keywords: ["json", "salvar", "carregar", "arquivo", "persistir"], response: "Arquivos e JSON na Parte 6 + usados em 10 dos 14 projetos. Persistência de dados é uma habilidade que você usa em TODOS os projetos reais!" },
+    { keywords: ["erro", "exception", "try", "except", "traceback", "bug"], response: "Tratamento de erros na Parte 5: try/except/finally, erros comuns, como ler traceback. Todo projeto do ebook usa isso — é o que separa código amador de profissional!" },
+    { keywords: ["decorators", "decorator", "decoradores"], response: "Decorators são ensinados na Parte 8: como criar, quando usar, exemplos práticos. São usados em Flask (rotas), autenticação e muito mais!" },
+    { keywords: ["generator", "generators", "yield", "lazy"], response: "Generators na Parte 8: yield, expressões geradoras, memória eficiente. Essencial para trabalhar com dados grandes e streams!" },
+
+    // === DÚVIDAS EXISTENCIAIS / EMOCIONAIS ===
+    { keywords: ["não sei se vale", "nao sei se vale", "vale a pena", "vale mesmo"], response: "Vale sim! Pensa: R$ 47,90 por 14 projetos completos, 677 páginas e acesso vitalício. Um curso online de Python custa R$ 500 a R$ 2.000 e nem tem metade do conteúdo. E se não valer, garantia de 7 dias." },
+    { keywords: ["estou com medo", "medo", "receio", "inseguro", "insegurança"], response: "É normal ter receio! Mas lembra: a garantia de 7 dias protege você. Se não gostar, devolvemos cada centavo. E o que você pode GANHAR com Python é muito maior do que os R$ 47,90 que você pode PERDER." },
+    { keywords: ["não acredito em mim", "nao acredito em mim", "não consigo", "nao consigo", "burro"], response: "Não diga isso! Se mais de 500 pessoas conseguiram aprender com este ebook, você também consegue. O ebook foi escrito para quem acha que 'não consegue'. Comece pela Parte 1 e surpreenda-se." },
+    { keywords: ["tá bom mesmo", "é bom mesmo", "recomenda", "recomendação"], response: "Recomendo sim! O ebook tem nota 4.9/5 nos depoimentos. Cada projeto funciona do zero, o código é testável e o conteúdo é denso. E com garantia de 7 dias, você não tem nada a perder." },
+
+    // === COMPARAÇÕES ===
+    { keywords: ["curso", "youtube", "gratuito", "online"], response: "Existem cursos e vídeos gratuitos, mas nenhum com 14 projetos completos e foco em DINHEIRO. O ebook é mais prático e estruturado. E R$ 47,90 é uma fração do custo de qualquer curso completo." },
+    { keywords: ["outro ebook", "outro livro", "diferença", "diferenca", "por que esse"], response: "O diferencial é o FOCO: cada projeto foi escolhido por gerar dinheiro. Não é um ebook teórico — é um guia de sobrevivência. 14 projetos que são produtos reais, não exercícios de faculdade." },
+    { keywords: ["udemy", "coursera", "alura"], response: "Plataformas ensinam Python, mas poucas têm 14 projetos COMPLETOS com foco em freelance. O ebook é um guia offline, sem assinatura, com conteúdo denso e projetos que são produtos de verdade." },
+
+    // === OUTROS ===
+    { keywords: ["obrigado", "obrigada", "valeu", "thanks", "brigado"], response: "De nada! 😊 Se tiver mais alguma dúvida, é só perguntar. Estou aqui para ajudar!" },
+    { keywords: ["autor", "quem escreveu", "quem criou", "quem é"], response: "O ebook foi escrito por um desenvolvedor Python com 8+ anos de experiência em automação, web e dados. Já ajudou 500+ pessoas a aprender Python. A abordagem é: fazer para aprender, não estudar para fazer." },
+    { keywords: ["como funciona", "explicar", "como é"], response: "O ebook é um guia passo a passo: cada parte tem teoria curta + código completo + explicações linha por linha + exercícios + mini-projeto. Você lê, digita, roda e aprende fazendo. Simples assim." },
+    { keywords: ["quantos projetos", "quantos projetos tem", "14 projetos"], response: "São 14 projetos completos, cada um com 4-5 capítulos: desde um jogo da forca até um sistema integrado com IA. São 7 partes com 2 projetos cada (Partes 9 a 15)." },
+    { keywords: ["sair", "tchau", "adeus", "até mais", "flw"], response: "Foi um prazer! 👋 Qualquer coisa, é só voltar. Boa jornada com Python — e lembra: R$ 47,90 e garantia de 7 dias. Não tem nada a perder!" },
+    { keywords: ["ok", "beleza", "entendi", "entendido", "compreendi"], response: "Perfeito! Se tiver mais alguma dúvida, é só mandar. Estou aqui para te ajudar a decidir! 😊" },
+    { keywords: ["legal", "show", "top", "massa", "incrível", "incivel", "bacana"], response: "Obrigado! O ebook é ainda melhor do que parece. E com garantia de 7 dias, você pode testar sem risco. Bora começar?" },
+    { keywords: ["link", "acesso", "baixar", "download"], response: "O link de download é enviado assim que você confirma o pagamento pelo WhatsApp (wa.me/5511931528235). PIX = entrega em segundos. Cartão = até 24h." }
+];
+
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatToggle = document.getElementById('chatbotToggle');
+const chatWindow = document.getElementById('chatbotWindow');
+
+function addMessage(text, isUser = false) {
+    const msg = document.createElement('div');
+    msg.className = 'msg ' + (isUser ? 'user' : 'bot');
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function addBotMessage(text, quickReplies = []) {
+    const msg = document.createElement('div');
+    msg.className = 'msg bot';
+    msg.textContent = text;
+    if (quickReplies.length > 0) {
+        const qr = document.createElement('div');
+        qr.className = 'quick-replies';
+        quickReplies.forEach(r => {
+            const btn = document.createElement('span');
+            btn.className = 'quick-reply';
+            btn.textContent = r;
+            btn.onclick = () => { chatInput.value = r; sendMessage(); };
+            qr.appendChild(btn);
+        });
+        msg.appendChild(qr);
+    }
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function findResponse(input) {
+    const lower = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    for (const r of chatResponses) {
+        for (const kw of r.keywords) {
+            const kwNorm = kw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            if (lower.includes(kwNorm)) return r.response;
+        }
+    }
+    return "Não tenho essa informação específica, mas posso te ajudar com: preço, projetos, formatos, entregas, garantia ou qualquer dúvida sobre o ebook. O que quer saber?";
+}
+
+function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+    addMessage(text, true);
+    chatInput.value = '';
+    setTimeout(() => {
+        const response = findResponse(text);
+        addBotMessage(response, ["Preço", "Projetos", "Comprar", "Garantia"]);
+    }, 500);
+}
+
+chatSend.onclick = sendMessage;
+chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+
+chatToggle.onclick = () => {
+    chatWindow.classList.toggle('active');
+    const icon = chatToggle.querySelector('.chat-icon');
+    const close = chatToggle.querySelector('.close-icon');
+    if (chatWindow.classList.contains('active')) {
+        icon.style.display = 'none'; close.style.display = 'block';
+    } else {
+        icon.style.display = 'block'; close.style.display = 'none';
+    }
+};
+
+document.getElementById('chatbotClose').onclick = () => {
+    chatWindow.classList.remove('active');
+    chatToggle.querySelector('.chat-icon').style.display = 'block';
+    chatToggle.querySelector('.close-icon').style.display = 'none';
+};
+
+// Welcome message
+setTimeout(() => {
+    addBotMessage("Olá! 👋 Sou o assistente do ebook Python Descomplicado. Como posso te ajudar?", ["Preço", "Projetos", "Comprar", "Garantia"]);
+}, 1000);
+</script>
+
+</body>
+</html>
